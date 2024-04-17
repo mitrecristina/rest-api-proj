@@ -25,19 +25,6 @@ public class DatabaseService {
     @Inject
     EntityManager em;
 
- /*  @Transactional
-    public void createUser(UserDao userDao) {
-        User user = new User();
-        user.setFirstName(userDao.firstName);
-        user.setLastName(userDao.lastName);
-        user.setUsername(userDao.username);
-        user.setPassword(userDao.password);
-
-
-        em.persist(user);
-        em.flush();
-    }*/
-
     @SuppressWarnings("unchecked")
     public List<UserDao> getUsers() {
 
@@ -208,7 +195,7 @@ public class DatabaseService {
     public String buy(String token, AutoturismeDao autdao)
             throws TokenExpirationException, UserNotFoundException, VehicleNotFoundException, VehicleOutOfStockException, NotEnoughMoneyException {
 
-        User user = exceptionUserandToken(token);
+        User user = exceptionUserAndToken(token);
 
         Query q = em.createQuery("select a From Autoturisme a where a.name = :name ");
         q.setParameter("name", autdao.name);
@@ -285,7 +272,7 @@ public class DatabaseService {
                 "join Autoturisme am on (am=a.autoturisme) " +
                 " where u = :user ");
 
-        User user = exceptionUserandToken(token);
+        User user = exceptionUserAndToken(token);
         System.out.println(user.getId());
         q.setParameter("user", user);
 
@@ -308,7 +295,7 @@ public class DatabaseService {
 
     }
 
-    public User exceptionUserandToken(String token) throws TokenExpirationException, UserNotFoundException {
+    public User exceptionUserAndToken(String token) throws TokenExpirationException, UserNotFoundException {
         Query q = em.createQuery("select u " +
                 "from User u " +
                 "join Token t on (u.token =t) " +
@@ -374,8 +361,6 @@ public class DatabaseService {
 
             throw new UserNotFoundException();
         }
-
-
     }
 }
 
